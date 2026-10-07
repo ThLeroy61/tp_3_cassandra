@@ -29,6 +29,7 @@ cass1  cass2  cass3
 - `cass1` est le seed et le seul à exposer le port 9042.
 - Chaque nœud possède 16 tokens (48 sur l'anneau).
 
+![alt text](image.png)
 
 ## 2. Table métier du TP2
 
@@ -42,6 +43,8 @@ Keyspace `meteo`, table `releves_temperature` :
 
 La table contient 20 relevés horaires pour Paris. Le keyspace contient aussi une table `villes` (clé `ville_id`) avec le nom et les coordonnées de la ville.
 
+![alt text](image-1.png)
+
 ## 3. Replication Factor
 
 ```sql
@@ -52,6 +55,8 @@ WITH replication = {'class': 'NetworkTopologyStrategy', 'dc1': 3};
 RF = 3 signifie que chaque partition est copiée 3 fois. Comme il y a 3 nœuds, chacun possède une copie de toutes les données (`Owns (effective)` = 100 % partout). La partition `paris` est donc présente sur `cass1`, `cass2` et `cass3`.
 
 Chemin d'une donnée : partition key (`ville_id`) → hash → token → nœud responsable → réplicas.
+
+
 
 ## 4. Tests de cohérence ONE, QUORUM, ALL
 
@@ -78,6 +83,7 @@ SELECT * FROM releves_temperature WHERE ville_id = 'paris' AND observed_at = '<o
 
 Avec les 3 nœuds disponibles, les trois lectures réussissent et renvoient la même ligne.
 
+![alt text](image-2.png)
 
 ## 5. Simulation de panne
 
